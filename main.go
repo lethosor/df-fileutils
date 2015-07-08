@@ -96,7 +96,10 @@ func main() {
             }
         }
         if ok {
-            fmt.Printf("%s: No compression errors detected\n", file)
+            fmt.Printf("%s: No compression errors detected (%d chunks)\n", file, chunk)
+        } else {
+            remaining, _ := ioutil.ReadAll(f)
+            fmt.Printf("%s: %d bytes unread\n", file, len(remaining))
         }
     }
 }
