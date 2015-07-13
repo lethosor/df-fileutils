@@ -8,16 +8,12 @@ import (
     "io"
     "io/ioutil"
     "os"
+
+    "./dfversions"
 )
 
-func readInt32(f *os.File) (ret int32, err error) {
-    buf := make([]byte, 4)
-    n, err := f.Read(buf)
-    if err != nil || n != 4 {
-        ret = 0
-        return
-    }
-    binary.Read(bytes.NewBuffer(buf), binary.LittleEndian, &ret)
+func readUInt32(f *os.File) (ret uint32, err error) {
+    err = binary.Read(f, binary.LittleEndian, &ret)
     return
 }
 
@@ -37,14 +33,19 @@ func main() {
             continue
         }
 
-        save_version, err := readInt32(f)
+        save_version, err := readUInt32(f)
         if err != nil {
             fmt.Println(err)
             continue
         }
-        fmt.Printf("%s: Save version %d\n", file, save_version)
+        save_desc := dfversions.Describe(save_version)
+        if dfversions.IsKnown(save_version) {
+            fmt.Printf("%s: Save version %s (%d)\n", file, save_desc, save_version)
+        } else {
+            fmt.Printf("%s: Unknown save version: %s (%d)\n", file, save_desc, save_version)
+        }
 
-        compressed, err := readInt32(f)
+        compressed, err := readUInt32(f)
         if err != nil {
             fmt.Println(err)
             continue
@@ -58,7 +59,7 @@ func main() {
         ok := false
         chunk := 1
         for ;; chunk++ {
-            length, err := readInt32(f)
+            length, err := readUInt32(f)
             if err == io.EOF {
                 ok = true
                 break
