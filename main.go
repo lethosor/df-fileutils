@@ -96,7 +96,7 @@ func main() {
                 fmt.Printf("%s: chunk %d: Read failed: %s\n", file, chunk, err)
                 break
             }
-            _, err = ioutil.ReadAll(reader)
+            _, err = io.Copy(ioutil.Discard, reader)
             if err != nil {
                 fmt.Printf("%s: chunk %d: Compression error: %s\n", file, chunk, err)
                 break
