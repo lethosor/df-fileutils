@@ -26,11 +26,7 @@ func main() {
         fmt.Printf("%s: No save file(s) given\n", os.Args[0])
         return
     }
-    for i, file := range os.Args {
-        if i == 0 || file == "-q" {
-            continue
-        }
-
+    for _, file := range flag.Args() {
         f, err := os.Open(file)
         if err != nil {
             fmt.Printf("%s: Not found\n", file)
