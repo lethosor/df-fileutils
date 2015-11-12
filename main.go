@@ -18,6 +18,14 @@ func readUInt32(f *os.File) (ret uint32, err error) {
     return
 }
 
+func bytesRemaining (f *os.File) (ret uint64) {
+    orig, _ := f.Seek(0, 1)
+    end, _ := f.Seek(0, 2)
+    ret = uint64(end - orig)
+    f.Seek(orig, 0)
+    return
+}
+
 func main() {
     var quiet bool
     flag.BoolVar(&quiet, "q", false, "Display only error messages")
@@ -103,8 +111,7 @@ func main() {
                 fmt.Printf("%s: No compression errors detected (%d chunks)\n", file, chunk)
             }
         } else {
-            remaining, _ := ioutil.ReadAll(f)
-            fmt.Printf("%s: %d bytes unread\n", file, len(remaining))
+            fmt.Printf("%s: %d bytes unread\n", file, bytesRemaining(f))
         }
     }
 }
