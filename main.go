@@ -68,8 +68,10 @@ func main() {
         // Attempt to decompress
         ok := false
         chunk := 1
+        bytes_read := 8
         for ;; chunk++ {
             length, err := readUInt32(f)
+            bytes_read += 4
             if err == io.EOF {
                 ok = true
                 break
@@ -86,6 +88,7 @@ func main() {
 
             buf := make([]byte, length)
             n, err := f.Read(buf)
+            bytes_read += n
             if err != nil {
                 fmt.Printf("%s: chunk %d: %s\n", file, chunk, err)
                 break
@@ -111,7 +114,7 @@ func main() {
                 fmt.Printf("%s: No compression errors detected (%d chunks)\n", file, chunk)
             }
         } else {
-            fmt.Printf("%s: %d bytes unread\n", file, bytesRemaining(f))
+            fmt.Printf("%s: %d bytes unread, %d bytes read\n", file, bytesRemaining(f), bytes_read)
         }
     }
 }
