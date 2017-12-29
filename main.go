@@ -97,12 +97,12 @@ func main() {
 
             reader, err := zlib.NewReader(bytes.NewReader(buf))
             if err != nil {
-                fmt.Printf("%s: chunk %d: Read failed: %s\n", file, chunk, err)
+                fmt.Printf("%s: chunk %d (length=%d): Read failed: %s\n", file, chunk, n, err)
                 break
             }
             _, err = io.Copy(ioutil.Discard, reader)
             if err != nil {
-                fmt.Printf("%s: chunk %d: Compression error: %s\n", file, chunk, err)
+                fmt.Printf("%s: chunk %d (length=%d): Compression error: %s\n", file, chunk, n, err)
                 break
             }
         }
