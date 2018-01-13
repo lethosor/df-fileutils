@@ -70,6 +70,7 @@ func main() {
         chunk := 1
         bytes_read := 8
         for ;; chunk++ {
+            start := bytes_read
             length, err := readUInt32(f)
             bytes_read += 4
             if err == io.EOF {
@@ -94,18 +95,18 @@ func main() {
                 break
             }
             if n != int(length) {
-                fmt.Printf("%s: chunk %d: Expected %d bytes, got %d\n", file, chunk, length, n)
+                fmt.Printf("%s: chunk %d (start=%d): Expected %d bytes, got %d\n", file, chunk, start, length, n)
                 break
             }
 
             reader, err := zlib.NewReader(bytes.NewReader(buf))
             if err != nil {
-                fmt.Printf("%s: chunk %d (length=%d): Read failed: %s\n", file, chunk, n, err)
+                fmt.Printf("%s: chunk %d (start=%d, length=%d): Read failed: %s\n", file, chunk, start, n, err)
                 break
             }
             _, err = io.Copy(ioutil.Discard, reader)
             if err != nil {
-                fmt.Printf("%s: chunk %d (length=%d): Compression error: %s\n", file, chunk, n, err)
+                fmt.Printf("%s: chunk %d (start=%d, length=%d): Compression error: %s\n", file, chunk, start, n, err)
                 break
             }
         }
