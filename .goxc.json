@@ -1,6 +1,6 @@
 {
 	"ArtifactsDest": "build/",
 	"BuildConstraints": "linux darwin,amd64 windows",
-	"PackageVersion": "0.2.5",
+	"PackageVersion": "0.2.6",
 	"ConfigVersion": "0.9"
 }
