@@ -10,7 +10,7 @@ import (
     "io/ioutil"
     "os"
 
-    "./dfversions"
+    "../../dfversions"
 )
 
 func readUInt32(f *os.File) (ret uint32, err error) {

@@ -1,9 +1,11 @@
-# df-savecheck
-DF save file validator
+# DF file utilities
+
+Included tools:
+* `df-savecheck`: DF save file validator
 
 ## Download
-* [Source code](https://github.com/lethosor/df-savecheck)
-* [Binaries](https://github.com/lethosor/df-savecheck/releases) (this is the "releases" tab if you are at the GitHub repository from the link above)
+* [Source code](https://github.com/lethosor/df-fileutils)
+* [Binaries](https://github.com/lethosor/df-fileutils/releases) (this is the "releases" tab if you are at the GitHub repository from the link above)
 
 ## Building
 
@@ -11,7 +13,7 @@ Uses [goxc](https://github.com/laher/goxc)
 
 * Compile:
 
-    * For current platform: ``go build``
+    * For current platform: ``go install ./...``
     * For all platforms: ``goxc compile``
 
 * Make release packages: ``goxc package``
