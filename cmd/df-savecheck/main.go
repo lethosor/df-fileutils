@@ -21,17 +21,11 @@ func main() {
         fmt.Printf("%s: No save file(s) given\n", os.Args[0])
         return
     }
-    for _, file := range flag.Args() {
-        f, err := os.Open(file)
-        if err != nil {
-            fmt.Printf("%s: Not found\n", file)
-            continue
-        }
-
+    util.ForEachFile(flag.Args(), func (file string, f *os.File) {
         save_version, err := util.ReadUInt32(f)
         if err != nil {
             fmt.Println(err)
-            continue
+            return
         }
         save_desc := dfversions.Describe(save_version)
         if !quiet {
@@ -45,11 +39,11 @@ func main() {
         compressed, err := util.ReadUInt32(f)
         if err != nil {
             fmt.Println(err)
-            continue
+            return
         }
         if compressed != 1 {
             fmt.Printf("%s: Not compressed\n", file)
-            continue
+            return
         }
 
         // Attempt to decompress
@@ -104,5 +98,5 @@ func main() {
         } else {
             fmt.Printf("%s: %d bytes unread, %d bytes read\n", file, util.BytesRemaining(f), bytes_read)
         }
-    }
+    })
 }

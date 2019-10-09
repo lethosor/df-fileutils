@@ -2,6 +2,7 @@ package util
 
 import (
     "encoding/binary"
+    "fmt"
     "os"
 )
 
@@ -18,3 +19,14 @@ func BytesRemaining (f *os.File) (ret uint64) {
     return
 }
 
+func ForEachFile (filenames []string, callback func (string, *os.File)) {
+    for _, filename := range filenames {
+        f, err := os.Open(filename)
+        if err != nil {
+            fmt.Printf("%s: %v\n", filename, err)
+            continue
+        }
+        defer f.Close()
+        callback(filename, f)
+    }
+}
