@@ -3,7 +3,6 @@ package main
 import (
     "bytes"
     "compress/zlib"
-    "encoding/binary"
     "flag"
     "fmt"
     "io"
@@ -11,20 +10,8 @@ import (
     "os"
 
     "../../dfversions"
+    "../../util"
 )
-
-func readUInt32(f *os.File) (ret uint32, err error) {
-    err = binary.Read(f, binary.LittleEndian, &ret)
-    return
-}
-
-func bytesRemaining (f *os.File) (ret uint64) {
-    orig, _ := f.Seek(0, 1)
-    end, _ := f.Seek(0, 2)
-    ret = uint64(end - orig)
-    f.Seek(orig, 0)
-    return
-}
 
 func main() {
     var quiet bool
@@ -41,7 +28,7 @@ func main() {
             continue
         }
 
-        save_version, err := readUInt32(f)
+        save_version, err := util.ReadUInt32(f)
         if err != nil {
             fmt.Println(err)
             continue
@@ -55,7 +42,7 @@ func main() {
             }
         }
 
-        compressed, err := readUInt32(f)
+        compressed, err := util.ReadUInt32(f)
         if err != nil {
             fmt.Println(err)
             continue
@@ -71,7 +58,7 @@ func main() {
         bytes_read := 8
         for ;; chunk++ {
             start := bytes_read
-            length, err := readUInt32(f)
+            length, err := util.ReadUInt32(f)
             bytes_read += 4
             if err == io.EOF {
                 ok = true
@@ -115,7 +102,7 @@ func main() {
                 fmt.Printf("%s: No compression errors detected (%d chunks)\n", file, chunk)
             }
         } else {
-            fmt.Printf("%s: %d bytes unread, %d bytes read\n", file, bytesRemaining(f), bytes_read)
+            fmt.Printf("%s: %d bytes unread, %d bytes read\n", file, util.BytesRemaining(f), bytes_read)
         }
     }
 }
