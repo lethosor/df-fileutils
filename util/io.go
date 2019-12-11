@@ -26,7 +26,10 @@ func ForEachFile (filenames []string, callback func (string, *os.File)) {
             fmt.Printf("%s: %v\n", filename, err)
             continue
         }
-        defer f.Close()
         callback(filename, f)
+        err = f.Close()
+        if err != nil {
+            fmt.Printf("%s: %v\n", filename, err)
+        }
     }
 }
