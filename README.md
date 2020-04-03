@@ -2,6 +2,7 @@
 
 Included tools:
 * `df-savecheck`: DF save file validator
+* `df-saveversion`: prints the last version of DF where a file was saved from
 
 ## Download
 * [Source code](https://github.com/lethosor/df-fileutils)
