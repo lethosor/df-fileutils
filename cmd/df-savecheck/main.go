@@ -21,7 +21,7 @@ func main() {
         fmt.Printf("%s: No save file(s) given\n", os.Args[0])
         return
     }
-    util.ForEachFile(flag.Args(), func (file string, f *os.File) {
+    util.ForEachFile(flag.Args(), func(file string, f *os.File) {
         save_version, err := util.ReadUInt32(f)
         if err != nil {
             fmt.Println(err)
@@ -50,7 +50,7 @@ func main() {
         ok := false
         chunk := 1
         bytes_read := 8
-        for ;; chunk++ {
+        for ; ; chunk++ {
             start := bytes_read
             length, err := util.ReadUInt32(f)
             bytes_read += 4

@@ -20,7 +20,7 @@ func main() {
             return
         }
         version_str := dfversions.Describe(version)
-        if (version_only) {
+        if version_only {
             fmt.Println(version_str)
         } else {
             fmt.Printf("%s: %s\n", file, version_str)
